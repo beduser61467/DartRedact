@@ -45,7 +45,6 @@ NOT STARTED: entropy detector, Flutter UI, OCR, ZIP/SARIF.
 ## Known Issues
 
 * Dart SDK was unavailable in the initial environment, so automated validation is pending.
-* Git index writes are unavailable to the sandbox user; `git diff --cached` could not be run. `git diff --check` on the unstaged tree passed before staging was attempted.
 * YAML is treated as text; it is not parsed/reformatted.
 
 ## Commands
@@ -70,6 +69,7 @@ Understand interfaces/tests before edits; minimize scope; preserve APIs; add no 
 ## Last Important Changes
 
 * Initial local-only MVP created with three Dart packages and CLI.
+* Initial commit is published to `origin/main`.
 
 ## Next Agent Handoff
 
