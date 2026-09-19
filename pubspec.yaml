@@ -1,0 +1,4 @@
+name: dart_redact_workspace
+publish_to: none
+environment:
+  sdk: ^3.4.0

@@ -1,0 +1,10 @@
+name: dart_redact_cli
+description: Command line interface for DartRedact.
+version: 0.1.0
+environment:
+  sdk: ^3.4.0
+dependencies:
+  dart_redact_core:
+    path: ../dart_redact_core
+  dart_redact_detectors:
+    path: ../dart_redact_detectors

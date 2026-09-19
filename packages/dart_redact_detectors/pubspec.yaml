@@ -1,0 +1,10 @@
+name: dart_redact_detectors
+description: Built-in secret detectors for DartRedact.
+version: 0.1.0
+environment:
+  sdk: ^3.4.0
+dependencies:
+  dart_redact_core:
+    path: ../dart_redact_core
+dev_dependencies:
+  test: ^1.25.0

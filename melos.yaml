@@ -1,0 +1,6 @@
+name: dart_redact
+packages:
+  - packages/**
+scripts:
+  analyze: dart analyze
+  test: dart test
