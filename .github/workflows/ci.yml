@@ -6,7 +6,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
-      - run: dart pub get
       - run: dart format --output=none --set-exit-if-changed .
-      - run: dart analyze
-      - run: dart test
+      - name: Validate every package
+        run: |
+          for package in packages/*; do
+            (cd "$package" && dart pub get && dart analyze && dart test)
+          done

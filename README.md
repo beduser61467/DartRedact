@@ -27,9 +27,12 @@ Requires Dart 3.4+. From this checkout run:
 ```sh
 dart run packages/dart_redact_cli/bin/dartredact.dart scan ./bug-report --json
 dart run packages/dart_redact_cli/bin/dartredact.dart sanitize ./bug-report --output ./safe-report --report
+dart run packages/dart_redact_cli/bin/dartredact.dart sanitize ./bug-report --dry-run --verbose
 ```
 
 Supported files: `.txt`, `.log`, `.json`, `.har`, `.env`, `.yaml`, `.yml`. Detectors include GitHub and AWS keys, JWTs, authorization/cookie headers, private keys, generic API keys, URL secret parameters, emails and IPv4/IPv6 addresses.
+
+`--dry-run` scans a sanitize target without writing copies or a report. `--verbose` adds operational details without exposing matches. Exit codes: `0` no findings, `1` findings, `2` processing error, `64` invalid usage.
 
 ## Architecture
 

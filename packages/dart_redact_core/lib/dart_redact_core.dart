@@ -73,25 +73,46 @@ class FileSanitizer {
   }
   String _sanitizeHar(String input) {
     final decoded = jsonDecode(input);
-    Object? walk(Object? value, [String? key]) {
+    Object? walk(Object? value, [String? key, bool inCookies = false]) {
       if (value is Map) {
         final name = value['name']?.toString().toLowerCase();
-        const sensitive = {'authorization', 'cookie', 'set-cookie', 'x-api-key', 'x-auth-token'};
-        if (name != null && sensitive.contains(name) && value.containsKey('value')) {
-          return {for (final e in value.entries) e.key: e.key == 'value' ? (name.contains('cookie') ? '[REDACTED_COOKIE]' : '[REDACTED_AUTHORIZATION]') : walk(e.value, e.key.toString())};
+        if (value.containsKey('value') && (inCookies || _isSensitiveHarName(name))) {
+          return {
+            for (final entry in value.entries)
+              entry.key: entry.key == 'value'
+                  ? _harPlaceholder(name, inCookies)
+                  : walk(entry.value, entry.key.toString(), inCookies),
+          };
         }
-        return {for (final e in value.entries) e.key: walk(e.value, e.key.toString())};
+        return {
+          for (final entry in value.entries)
+            entry.key: walk(
+              entry.value,
+              entry.key.toString(),
+              inCookies || entry.key.toString().toLowerCase() == 'cookies',
+            ),
+        };
       }
-      if (value is List) return value.map((e) => walk(e, key)).toList();
+      if (value is List) return value.map((element) => walk(element, key, inCookies)).toList();
       if (value is String) {
-        const sensitive = {'authorization', 'cookie', 'set-cookie', 'x-api-key', 'x-auth-token'};
-        if (key != null && sensitive.contains(key.toLowerCase())) return key.toLowerCase().contains('cookie') ? '[REDACTED_COOKIE]' : '[REDACTED_AUTHORIZATION]';
+        if (inCookies || _isSensitiveHarName(key?.toLowerCase())) {
+          return _harPlaceholder(key?.toLowerCase(), inCookies);
+        }
         return redactor.sanitizeText(value);
       }
       return value;
     }
     return const JsonEncoder.withIndent('  ').convert(walk(decoded));
   }
+  bool _isSensitiveHarName(String? name) => const {
+    'authorization', 'cookie', 'set-cookie', 'x-api-key', 'x-auth-token',
+    'api-key', 'api_key', 'token', 'access_token', 'refresh_token', 'secret',
+    'password',
+  }.contains(name);
+  String _harPlaceholder(String? name, bool inCookies) =>
+      inCookies || name == 'cookie' || name == 'set-cookie'
+          ? '[REDACTED_COOKIE]'
+          : '[REDACTED_AUTHORIZATION]';
   String _extension(String path) => path.contains('.') ? '.${path.split('.').last.toLowerCase()}' : '';
   String _relative(String root, String path) => path.startsWith(root) ? path.substring(root.length).replaceFirst(RegExp(r'^[\\/]'), '') : path.split(Platform.pathSeparator).last;
 }

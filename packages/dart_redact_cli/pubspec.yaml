@@ -8,3 +8,5 @@ dependencies:
     path: ../dart_redact_core
   dart_redact_detectors:
     path: ../dart_redact_detectors
+dev_dependencies:
+  test: ^1.25.0

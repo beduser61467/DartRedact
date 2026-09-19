@@ -33,8 +33,7 @@ NOT STARTED: entropy detector, Flutter UI, OCR, ZIP/SARIF.
 ## Current Priorities
 
 1. Run validation once Dart SDK is available.
-2. Improve structured HAR edge-case coverage.
-3. Add release packaging and versioning.
+2. Add release packaging and versioning.
 
 ## Architectural Decisions
 
@@ -44,7 +43,7 @@ NOT STARTED: entropy detector, Flutter UI, OCR, ZIP/SARIF.
 
 ## Known Issues
 
-* Dart SDK was unavailable in the initial environment, so automated validation is pending.
+* Dart SDK is unavailable in the current environment, so automated validation remains pending.
 * YAML is treated as text; it is not parsed/reformatted.
 
 ## Commands
@@ -70,7 +69,8 @@ Understand interfaces/tests before edits; minimize scope; preserve APIs; add no 
 
 * Initial local-only MVP created with three Dart packages and CLI.
 * Initial commit is published to `origin/main`.
+* HAR traversal now covers sensitive headers, cookies, query entries, URLs and post data; CLI supports tested `--dry-run`, `--verbose`, and documented exit codes.
 
 ## Next Agent Handoff
 
-Run the canonical validation commands after installing Dart. Focus next on improving malformed/less common HAR schema coverage; do not redesign the `SecretDetector` API without a compatibility reason.
+Run the canonical validation commands after installing Dart. Focus next on release packaging and less common HAR schema coverage; do not redesign the `SecretDetector` API without a compatibility reason.
